@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<meta http-equiv="refresh" content="30"/>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+button {
+  
+  top: 20%;
+  left: 90%;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 20rem;
+}
+
+p{
+	text-align: "right";
+}
+</style>
+
+</head>
+<body>
+
+<h1>DashBoard</h1>
+<button type="submit" onclick="logOutFunc()">LogOut</button><br>
+
+<h2>Profile</h2>
+
+
+<p id="demo"></p>
+<form>
+	<input type="hidden" id="idd" name="idd"> &nbsp;
+	<label for="name">Name:</label>
+	<input type="text" id="name" name="name"> &nbsp;
+	<label for="email">Email:</label>
+	<input type="email" id="email" name="email">&nbsp;
+	<label for="password">Password:</label>
+	<input type="password" id="pass" name="pass">&nbsp;
+	<label for="lname">Confirm password:</label>
+	<input type="password" id="cpass" name="cpass">&nbsp;
+	<button type="submit" onclick="updateFunc()">Update</button>
+  </form>
+
+<h2>User Info</h2>
+<div>
+	<table id="table" style="width:100%">
+	       <thead>
+		    <tr>
+		      <th>Name : </th>
+		      <th>Email :</th>
+		      <th>Pass :</th>
+		      <th>Cpass :</th>
+			  <th>Action :</th>
+		    </tr>
+		</thead>
+		
+		<tbody>
+		<!--displaying Data -->
+		</tbody>
+	</table>
+</div>
+<button type="submit" onclick="ClearFunc()">Clear All Data</button>
+<script type="text/javascript">
+
+	if(localStorage.getItem('formData')){
+	
+		
+		let Sname = JSON.parse(localStorage.getItem('currentUser'));	
+		document.getElementById("demo").innerHTML ="Welcom : "+ Sname.name;
+	
+	
+		//let {name,email,pass,cpass} = JSON.parse(localStorage.getItem('formData'));
+		let output = document.querySelector("tbody");
+		//document.getElementById("demo").innerHTML ="Welcom : "+ localStorage.getItem('name');
+		output.innerHTML == '';
+		JSON.parse(localStorage.getItem('formData')).forEach(data => { 
+		output.innerHTML += `
+	  	<tr>
+	  		  <td>${data.name}</td>
+	  		  <td>${data.email}</td>
+	 		  <td>${data.pass}</td>
+	 		  <td>${data.cpass}</td>
+			 <td><button type="submit" onclick="editFunc(${data.id})">edit</button>
+				<button type="submit" onclick="delFunc(${data.id})">delete</button>
+				</td>
+	 	</tr>
+		 <table>
+		 `;	 
+	
+		})
+		
+			
+	}
+	//<button type="submit" onclick="editFunc()">edit</button>
+
+	function delFunc(id){
+	  debugger
+	
+	var table = JSON.parse(localStorage.getItem('formData'));
+	table.forEach(function(item,index){
+	if(parseInt(id)===parseInt(item.id)){
+		table.splice(index,1)
+		}
+		location.reload();
+		localStorage.setItem("formData", JSON.stringify(table)); 
+
+	});	
+}
+
+
+function editFunc(id){
+	// var table = JSON.parse(localStorage.getItem('formData'));
+	// 		table.forEach(function(item,index){
+	// 			if(id===item.id){
+	// 			table.splice(index,1)
+	// 			}
+	// 			localStorage.setItem("formData", JSON.stringify(table));
+			 
+	// 		});	
+
+
+	
+		let formData = JSON.parse(localStorage.getItem('formData')) || [];
+		
+		var editUser = formData.filter(obj =>{
+			return parseInt(obj.id) === parseInt(id);
+		}) 
+			var idd =  document.getElementById('idd').value = editUser[0].id;
+			var name = document.getElementById('name').value = editUser[0].name;
+			var email = document.getElementById('email').value = editUser[0].email;
+       		var pass = document.getElementById('pass').value = formData[0].pass;
+        	var cpass = document.getElementById('cpass').value = formData[0].cpass;
+
+		console.log(editUser[0].id,
+					editUser[0].name,
+					editUser[0].email,
+					editUser[0].pass,
+					editUser[0].cpass);
+
+			
+			// formData.push({id, name, email , pass, cpass });
+	        	// localStorage.setItem('formData', JSON.stringify(formData));
+    	    	// alert("Account Updated.");
+				// document.getElementById("form").focus();
+
+
+}
+	
+			
+function updateFunc(){
+
+	let formData = JSON.parse(localStorage.getItem('formData')) || [];
+	let id = parseInt(document.getElementById('idd').value);
+
+	formData = formData.filter(obj => {
+		return parseInt(obj.id) !== id;
+	})
+	var updatedUser= {
+		id : parseInt(document.getElementById('idd').value),
+		name : document.getElementById('name').value,
+		email : document.getElementById('email').value,
+		pass : document.getElementById('pass').value,
+		cpass : document.getElementById('cpass').value
+	}
+	 formData.push(updatedUser);
+	 
+	 		// formData.pop({id, name, email , pass, cpass });
+        	// localStorage.setItem('formData', JSON.stringify(formData));
+			
+			// formData.push({id, name, email , pass, cpass });
+        	localStorage.setItem('formData', JSON.stringify(formData));
+        	alert("Account Updated.");			
+			// document.getElementById("form").focus();
+}
+		
+
+
+
+	
+	function logOutFunc(){
+		
+		window.location.href = "login.html"
+	}
+
+	function ClearFunc(){
+
+	localStorage.clear();
+}
+</script>
+
+
+<!--	<table style="width:100%">
+  	   <tr>	
+	    <th><b>Name</b></th>
+	    <th><b>Email</b></th>
+	    <th><b>Password</b></th>
+	     <th><b>confirm Password</b></th>
+	  </tr>
+	  <tr>	
+	    <td><p id="name"></p></td>
+	    <td><p id="email"></p></td>
+	    <td><p id="pass"></p></td>
+	    <td><p id="cpass"></p></td>
+	  </tr>
+	</table>
+	
+	<script>
+	 var storedName = localStorage.getItem('name');
+	 var storedName = localStorage.getItem('email');
+	 var storedName = localStorage.getItem('pass');
+	 var storedName = localStorage.getItem('cpass');
+	 
+	 document.getElementById("name").innerHTML =localStorage.getItem("name");
+	 document.getElementById("email").innerHTML =localStorage.getItem("email");
+	 document.getElementById("pass").innerHTML =localStorage.getItem("pass");
+	 document.getElementById("cpass").innerHTML =localStorage.getItem("cpass");
+	</script>  -->
+</body>
+</html>

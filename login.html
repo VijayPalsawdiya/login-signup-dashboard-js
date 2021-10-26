@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+	input[type=email],input[type=password], select {
+	  width: 100%;
+	  padding: 12px 20px;
+	  margin: 8px 0;
+	  display: inline-block;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  box-sizing: border-box;
+	}
+	
+	
+	input[type=submit] {
+	  width: 100%;
+	  background-color: #4CAF50;
+	  color: white;
+	  padding: 14px 20px;
+	  margin: 8px 0;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+	
+	button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 20rem;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+	
+	div {
+	  border-radius: 5px;
+	  background-color: #f2f2f2;
+	  padding: 20px;
+	}
+	
+</style>
+</head>
+<body>
+
+<h1>LOGIN</h1>
+
+<div>
+<form  class="form" onsubmit="logIn(event);">
+  <div class="box">
+  <label for="Email">Email:</label><br>
+  <input type="email" id="email" name="email"><br><br>
+  <label for="password">Password:</label><br>
+  <input type="password" id="pass" name="pass"><br><br>
+  <button type="submit">logIn</button>
+<br><br><br>
+  <p style="justify-content: center;">Don't have Account:  <a href="SignUp.html">SignUp here</a></p>
+  </div>
+</form> 
+</div>
+<script type="text/javascript">
+// check if stored data from register-form is equal to entered data in the   login-form
+
+async function logIn(e) {
+
+e.preventDefault();
+    let email = document.getElementById('email').value; 
+    let pass = document.getElementById('pass').value;
+    
+    let formData = JSON.parse(localStorage.getItem('formData'));
+    
+    let exist = JSON.parse(localStorage.getItem('formData')).some(data => data.email == email && data.pass == pass);
+    
+    if(!exist){
+ 
+        alert("Incorrect login credentials");
+    }
+    else{
+      	let curr_user = await JSON.parse(localStorage.getItem('formData')).filter((show) => { return show.email == email && show.pass == pass})[0]
+    	
+    	console.log('curr_user', curr_user.name);
+    	localStorage.setItem('currentUser', JSON.stringify(curr_user) )
+        window.location.href = "Dboard.html"
+		
+	
+	}
+    
+}
+
+
+
+
+
+		 
+/*	    for(let i=0; i<email.length; i++){
+	        var storedEmail = [];
+	        var storedPass = [];
+	        storedEmail[i]=JSON.parse(localStorage.getItem('email[i]'));
+	        storedPass[i]=JSON.parse(localStorage.getItem('pass[i]'));
+	        debugger
+	        if(userEmail.value == storedEmail[i] && userPass.value == storedPass[i]) {
+	            alert('You are loged in.');
+	        }else {
+	            alert('ERROR.');
+	        }
+	    } 
+
+*/
+
+
+/*
+	    // stored data from the register-form
+	    
+	    let users_Rec = new Array();
+	    users_Rec = JSON.parse(localStorage.getItem('email'))?JSON.parse(localStorage.getItem('pass')):[];
+	    debugger
+	    if(users_Rec.some((a) => 
+	    { return a.email==userEmail && a.email==userPass}))
+	    {
+	    debugger
+	    alert("succesfull");
+	    window.open('Dboard.html');
+	    }else{
+	    debugger
+	    alert("failed");
+	    //window.open('Dboard.html');
+	    }
+	    
+	    //let formData = JSON.parse(localStorage.getItem('formData'));
+	    
+	    //var storedEmail = JSON.parse(localStorage.getItem('email'));
+	    //var storedPass = JSON.parse(localStorage.getItem('pass'));
+*/
+
+
+	/*
+	    // checkinf both are equal
+	    if(userEmail == storedEmail && userPass == storedPass) {
+	       //alert('You are loged in.');
+	       //location.href = './Dboard.html';
+	       //window.location.replace("./Dboard.html"); 
+	       window.open('Dboard.html'); 
+	    }else {
+	        alert('Error');
+	    }
+	}    
+	  */
+	
+
+</script>
+
+</body>
+</html>

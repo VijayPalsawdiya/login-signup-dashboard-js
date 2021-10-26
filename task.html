@@ -1,0 +1,31 @@
+<script>
+var projects = [
+{
+    value: "jquery",
+    label: "jQuery",
+    desc: "the write less, do more, JavaScript library",
+    icon: "jquery_32x32.png"
+},
+{
+    value: "jquery-ui",
+    label: "jQuery UI",
+    desc: "the official user interface library for jQuery",
+    icon: "jqueryui_32x32.png"
+}];
+
+//find the index of object from array that you want to update
+const objIndex = projects.findIndex(obj => obj.value === 'jquery-ui');
+
+// make new object of updated object.   
+const updatedObj = { ...projects[objIndex], desc: 'updated desc value'};
+
+// make final new array of objects by combining updated object.
+const updatedProjects = [
+  ...projects.slice(0, objIndex),
+  updatedObj,
+  ...projects.slice(objIndex + 1),
+];
+
+console.log("original data=", projects);
+console.log("updated data=", updatedProjects);
+</script>
